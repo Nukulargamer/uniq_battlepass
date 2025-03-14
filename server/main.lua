@@ -629,6 +629,8 @@ end)
 lib.cron.new(Config.WeeklyRestart, function()
     for k,v in pairs(Players) do
         v.battlepass.weekly = {}
+        v.battlepass.freeClaims = {}
+        v.battlepass.premiumClaims = {}
     end
 
     local query = MySQL.query.await('SELECT * FROM `uniq_battlepass`')
@@ -639,6 +641,8 @@ lib.cron.new(Config.WeeklyRestart, function()
         for k, v in pairs(query) do
             v.battlepass = json.decode(v.battlepass)
             v.battlepass.weekly = {}
+            v.battlepass.freeClaims = {}
+            v.battlepass.premiumClaims = {}
 
             insertTable[#insertTable + 1] = { query = Query.INSERT, values = { v.owner, json.encode(v.battlepass, { sort_keys = true }) } }
         end
